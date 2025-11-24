@@ -1,3 +1,5 @@
+using Estudos.Microsservices.Contratos;
+using MassTransit;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using RabbitMQ.Client;
@@ -18,6 +20,22 @@ await channel.QueueDeclareAsync(
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddMassTransit(busConfigurator =>
+{
+    busConfigurator.SetKebabCaseEndpointNameFormatter();
+
+    busConfigurator.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("", h =>
+        {
+            h.Username(builder.Configuration["MessageBroker:Username"]!);
+            h.Password(builder.Configuration["MessageBroker:Password"]!);
+        });
+
+        cfg.ConfigureEndpoints(context);
+    });
+});
+
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(resource => resource.AddService("WebApi"))
     .WithTracing(tracing => tracing
@@ -30,18 +48,17 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-app.MapGet("/", async () => {
+app.MapGet("/", async (ISendEndpointProvider sendEndpointProvider) => {
     Console.WriteLine("Teste 3");
     var datetime = DateTime.Now;
     var message = $"Mensagem de teste! {datetime}";
+    var busMessage = new BusMessage()
+    {
+        Message = $"Mensagem de teste! {datetime}"
+    };
     var body = Encoding.UTF8.GetBytes(message);
-    await channel.BasicPublishAsync(
-        exchange: "",
-        routingKey: "SegundoTeste",
-        mandatory: true,
-        basicProperties: new BasicProperties { Persistent = true },
-        body: body
-        );
+    var endpoint = await sendEndpointProvider.GetSendEndpoint(new Uri("queue:SegundoTeste"));
+    await endpoint.Send(busMessage);
     Console.WriteLine($"Enviado {datetime}");
     return "Hello World!";
 });
