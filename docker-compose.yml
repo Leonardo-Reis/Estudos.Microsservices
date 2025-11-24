@@ -1,0 +1,43 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3.11-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  webapplication1:
+    build:
+      context: ./WebApi
+      dockerfile: Dockerfile
+    image: webapi:latest
+    depends_on:
+      - rabbitmq
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://api-jeager:4317
+    ports:
+      - "5000:8080"
+
+  brokerconsumer:
+    build:
+      context: ./BrokerConsumer
+      dockerfile: Dockerfile
+    image: brokerconsumer:latest
+    depends_on:
+      - rabbitmq
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+    stdin_open: true
+    tty: true
+
+  api-jeager:
+    image: jaegertracing/all-in-one:latest
+    container_name: api-jeager
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+      - "16686:16686"

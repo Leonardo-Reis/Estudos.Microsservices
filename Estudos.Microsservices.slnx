@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/Itens de Solução/">
+    <File Path="docker-compose.yml" />
+  </Folder>
+  <Project Path="BrokerConsumer/BrokerConsumer.csproj" Id="4356fd0d-f5a1-4e63-94de-025ae439e506" />
+  <Project Path="WebApi/WebApi.csproj" />
+</Solution>

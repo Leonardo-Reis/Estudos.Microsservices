@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Novo Perfil",
+    "Projects": [
+      {
+        "Path": "WebApplication1\\WebApplication1.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "BrokerConsumer\\BrokerConsumer.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
