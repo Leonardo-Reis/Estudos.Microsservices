@@ -2,7 +2,7 @@
   <Folder Name="/Itens de Solução/">
     <File Path="docker-compose.yml" />
   </Folder>
-  <Project Path="BrokerConsumer/BrokerConsumer.csproj" Id="4356fd0d-f5a1-4e63-94de-025ae439e506" />
-  <Project Path="Estudos.Microsservices.Contratos/Estudos.Microsservices.Contratos.csproj" Id="28c46503-5164-4ebd-94a5-45d48f43d8d8" />
-  <Project Path="WebApi/WebApi.csproj" />
+  <Project Path="src/Estudos.Microsservices.Consumer/Estudos.Microsservices.Consumer.csproj" />
+  <Project Path="src/Estudos.Microsservices.Contratos/Estudos.Microsservices.Contratos.csproj" />
+  <Project Path="src/WebApi/WebApi.csproj" />
 </Solution>

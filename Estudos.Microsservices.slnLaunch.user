@@ -3,11 +3,11 @@
     "Name": "Novo Perfil",
     "Projects": [
       {
-        "Path": "WebApplication1\\WebApplication1.csproj",
+        "Path": "Estudos.Microsservices.Consumer\\Estudos.Microsservices.Consumer.csproj",
         "Action": "Start"
       },
       {
-        "Path": "BrokerConsumer\\BrokerConsumer.csproj",
+        "Path": "WebApi\\WebApi.csproj",
         "Action": "Start"
       }
     ]

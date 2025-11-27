@@ -22,11 +22,11 @@ services:
     ports:
       - "5000:8080"
 
-  brokerconsumer:
+  Estudos.Microsservices.Consumer:
     build:
-      context: ./BrokerConsumer
+      context: ./Estudos.Microsservices.Consumer
       dockerfile: Dockerfile
-    image: brokerconsumer:latest
+    image: Estudos.Microsservices.Consumer:latest
     depends_on:
       - rabbitmq
     environment:
