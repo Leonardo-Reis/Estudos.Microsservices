@@ -8,7 +8,6 @@ var builder = Host.CreateApplicationBuilder(args);
 //builder.Services.AddHostedService<Worker>();
 
 var rabbitHost = Environment.GetEnvironmentVariable("RABBITMQ_HOST")
-                 ?? builder.Configuration["MessageBroker:Host"]
                  ?? "localhost";
 
 builder.Services.AddMassTransit(busConfigurator =>
@@ -25,7 +24,11 @@ builder.Services.AddMassTransit(busConfigurator =>
             h.Password(builder.Configuration["MessageBroker:Password"]!);
         });
 
-        cfg.ConfigureEndpoints(context);
+        cfg.ReceiveEndpoint("SegundoTeste", e =>
+        {
+            e.ConfigureConsumer<BusMessageConsumer>(context);
+        });
+        //cfg.ConfigureEndpoints(context);
     });
 });
 
@@ -38,4 +41,4 @@ builder.Services.AddOpenTelemetry()
         .AddOtlpExporter());
 
 var host = builder.Build();
-host.Run();
+await host.RunAsync();

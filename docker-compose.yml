@@ -9,35 +9,36 @@ services:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
 
-  webapplication1:
-    build:
-      context: ./WebApi
-      dockerfile: Dockerfile
-    image: webapi:latest
-    depends_on:
-      - rabbitmq
-    environment:
-      - RABBITMQ_HOST=rabbitmq
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://api-jeager:4317
-    ports:
-      - "5000:8080"
-
-  Estudos.Microsservices.Consumer:
-    build:
-      context: ./Estudos.Microsservices.Consumer
-      dockerfile: Dockerfile
-    image: Estudos.Microsservices.Consumer:latest
-    depends_on:
-      - rabbitmq
-    environment:
-      - RABBITMQ_HOST=rabbitmq
-    stdin_open: true
-    tty: true
-
-  api-jeager:
+  api-jaeger:
     image: jaegertracing/all-in-one:latest
-    container_name: api-jeager
+    container_name: api-jaeger
     ports:
       - "4317:4317"
       - "4318:4318"
       - "16686:16686"
+
+  webapi:
+    build:
+      context: .
+      dockerfile: src/WebApi/Dockerfile
+    image: webapi:latest
+    depends_on:
+      - rabbitmq
+      - api-jaeger
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://api-jaeger:4317
+    ports:
+      - "5000:8080"
+
+  consumer:
+    build:
+      context: .
+      dockerfile: src/Estudos.Microsservices.Consumer/Dockerfile
+    image: estudos.microsservices.consumer:latest
+    depends_on:
+      - rabbitmq
+    environment:
+      RABBITMQ_HOST: rabbitmq
+    stdin_open: true
+    tty: true

@@ -1,5 +1,6 @@
 using Estudos.Microsservices.Contratos;
 using MassTransit;
+using MassTransit.RabbitMqTransport;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 //using RabbitMQ.Client;
@@ -20,13 +21,17 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var rabbitHost = Environment.GetEnvironmentVariable("RABBITMQ_HOST")
+                 ?? builder.Configuration["MessageBroker:Host"]
+                 ?? "localhost";
+
 builder.Services.AddMassTransit(busConfigurator =>
 {
     busConfigurator.SetKebabCaseEndpointNameFormatter();
 
     busConfigurator.UsingRabbitMq((context, cfg) =>
     {
-        cfg.Host("", h =>
+        cfg.Host(rabbitHost, 5672, "/", h =>
         {
             h.Username(builder.Configuration["MessageBroker:Username"]!);
             h.Password(builder.Configuration["MessageBroker:Password"]!);
