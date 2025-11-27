@@ -1,29 +1,32 @@
-# Acesse https://aka.ms/customizecontainer para saber como personalizar seu contêiner de depuração e como o Visual Studio usa este Dockerfile para criar suas imagens para uma depuração mais rápida.
-
-# Esta fase é usada durante a execução no VS no modo rápido (Padrão para a configuração de Depuração)
+# Runtime base
 FROM mcr.microsoft.com/dotnet/runtime:10.0 AS base
-USER $APP_UID
 WORKDIR /app
 
-
-# Esta fase é usada para compilar o projeto de serviço
+# Build SDK
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-# Copie o arquivo do projeto do contexto do projeto (ao construir com ./Estudos.Microsservices.Consumer como contexto)
-COPY ["Estudos.Microsservices.Consumer.csproj", "./"]
-RUN dotnet restore "./Estudos.Microsservices.Consumer.csproj"
-COPY . .
-WORKDIR "/src"
-RUN dotnet build "./Estudos.Microsservices.Consumer.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# Esta fase é usada para publicar o projeto de serviço a ser copiado para a fase final
+# Copiar csproj dos dois projetos
+COPY src/Estudos.Microsservices.Contratos/Estudos.Microsservices.Contratos.csproj Estudos.Microsservices.Contratos/
+COPY src/Estudos.Microsservices.Consumer/Estudos.Microsservices.Consumer.csproj Estudos.Microsservices.Consumer/
+
+# Restore
+RUN dotnet restore Estudos.Microsservices.Consumer/Estudos.Microsservices.Consumer.csproj
+
+# Copiar tudo
+COPY src/ .
+
+# Build
+WORKDIR /src/Estudos.Microsservices.Consumer
+RUN dotnet build -c $BUILD_CONFIGURATION -o /app/build
+
+# Publish
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Estudos.Microsservices.Consumer.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# Esta fase é usada na produção ou quando executada no VS no modo normal (padrão quando não está usando a configuração de Depuração)
-FROM base AS final
+# Final image
+FROM mcr.microsoft.com/dotnet/runtime:10.0 AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Estudos.Microsservices.Consumer.dll"]
