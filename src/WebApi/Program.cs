@@ -1,5 +1,6 @@
 using Estudos.Microsservices.Contratos;
 using MassTransit;
+using MassTransit.Logging;
 using MassTransit.RabbitMqTransport;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -46,7 +47,7 @@ builder.Services.AddOpenTelemetry()
     .WithTracing(tracing => tracing
         .AddAspNetCoreInstrumentation()
         .AddHttpClientInstrumentation()
-        .AddSource("RabbitMQ.Client")
+        .AddSource(DiagnosticHeaders.DefaultListenerName)
         .AddOtlpExporter());
 
 builder.Services.AddControllers();

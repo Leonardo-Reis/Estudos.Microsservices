@@ -40,5 +40,6 @@ services:
       - rabbitmq
     environment:
       RABBITMQ_HOST: rabbitmq
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://api-jaeger:4317
     stdin_open: true
     tty: true
