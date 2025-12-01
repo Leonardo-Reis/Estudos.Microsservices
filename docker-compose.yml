@@ -38,9 +38,12 @@ services:
     image: estudos.microsservices.consumer:latest
     depends_on:
       - rabbitmq
+      - mongo
+      - api-jaeger
     environment:
       RABBITMQ_HOST: rabbitmq
       OTEL_EXPORTER_OTLP_ENDPOINT: http://api-jaeger:4317
+      ConnectionStrings__DbConnection: "mongodb://devroot:devroot@mongo:27017/estudos-microsservicos?authSource=admin"
     stdin_open: true
     tty: true
 
@@ -52,17 +55,6 @@ services:
       MONGO_INITDB_ROOT_USERNAME: devroot
       MONGO_INITDB_ROOT_PASSWORD: devroot
       MONGO_INITDB_DATABASE: project
-
-  # mongo:
-  #   image: mongo
-  #   environment:
-  #     - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
-  #     - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
-  #     - MONGO_INITDB_DATABASE=project
-  #     - MONGO_ROOT_USER=devroot
-  #     - MONGO_ROOT_PASSWORD=devroot
-  #     - MONGOEXPRESS_LOGIN=dev
-  #     - MONGOEXPRESS_PASSWORD=dev
 
   mongo-express:
     image: mongo-express
