@@ -40,6 +40,8 @@ namespace Estudos.Microsservices.Consumer.Setup
                     .WithTracing(tracing => tracing
                         .AddAspNetCoreInstrumentation()
                         .AddHttpClientInstrumentation()
+                        .SetErrorStatusOnException()
+                        .AddSource("MongoDB.Driver.Core.Extensions.DiagnosticSources")
                         .AddSource(DiagnosticHeaders.DefaultListenerName)
                         .AddOtlpExporter());
 

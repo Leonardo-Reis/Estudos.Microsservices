@@ -1,13 +1,13 @@
 [
   {
-    "Name": "Novo Perfil",
+    "Name": "Broker e Api l",
     "Projects": [
       {
-        "Path": "Estudos.Microsservices.Consumer\\Estudos.Microsservices.Consumer.csproj",
+        "Path": "src\\Estudos.Microsservices.Consumer\\Estudos.Microsservices.Consumer.csproj",
         "Action": "Start"
       },
       {
-        "Path": "WebApi\\WebApi.csproj",
+        "Path": "src\\WebApi\\WebApi.csproj",
         "Action": "Start"
       }
     ]

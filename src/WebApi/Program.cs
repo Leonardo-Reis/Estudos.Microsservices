@@ -1,3 +1,4 @@
+using DnsClient;
 using Estudos.Microsservices.Contratos;
 using MassTransit;
 using MassTransit.Logging;
@@ -23,9 +24,7 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 var rabbitHost = Environment.GetEnvironmentVariable("RABBITMQ_HOST")
-                 ?? builder.Configuration["MessageBroker:Host"]
                  ?? "localhost";
-
 builder.Services.AddMassTransit(busConfigurator =>
 {
     busConfigurator.SetKebabCaseEndpointNameFormatter();
@@ -46,7 +45,9 @@ builder.Services.AddOpenTelemetry()
     .ConfigureResource(resource => resource.AddService("WebApi"))
     .WithTracing(tracing => tracing
         .AddAspNetCoreInstrumentation()
+        .SetErrorStatusOnException()
         .AddHttpClientInstrumentation()
+        .AddSource("MongoDB.Driver.Core.Extensions.DiagnosticSources")
         .AddSource(DiagnosticHeaders.DefaultListenerName)
         .AddOtlpExporter());
 
