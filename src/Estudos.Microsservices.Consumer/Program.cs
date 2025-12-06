@@ -1,4 +1,4 @@
-using Estudos.Microsservices.Consumer.Data;
+using Estudos.Microsservices.Infra.Data.MongoDb;
 using Estudos.Microsservices.Consumer.Setup;
 
 var builder = Host.CreateApplicationBuilder(args);

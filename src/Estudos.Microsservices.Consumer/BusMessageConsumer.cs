@@ -1,7 +1,6 @@
-﻿using Estudos.Microsservices.Consumer.Data;
+﻿using Estudos.Microsservices.Infra.Data.MongoDb;
 using Estudos.Microsservices.Consumer.Entities;
 using Estudos.Microsservices.Contratos;
-using System.Text.Json;
 using MassTransit;
 namespace Estudos.Microsservices.Consumer;
 

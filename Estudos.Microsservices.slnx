@@ -2,6 +2,7 @@
   <Folder Name="/Itens de Solução/">
     <File Path="docker-compose.yml" />
   </Folder>
+  <Project Path="src/Estudos.Microsservices.Infra/Estudos.Microsservices.Infra.csproj" Id="ea55ef3a-10c5-49ef-891d-fd0132b15a55" />
   <Project Path="src/Estudos.Microsservices.Consumer/Estudos.Microsservices.Consumer.csproj" />
   <Project Path="src/Estudos.Microsservices.Contratos/Estudos.Microsservices.Contratos.csproj" />
   <Project Path="src/WebApi/Estudos.Microsservices.WebApi.csproj" />

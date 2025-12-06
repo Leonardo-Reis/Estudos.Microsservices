@@ -22,6 +22,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Estudos.Microsservices.Infra\Estudos.Microsservices.Infra.csproj" />
 	  <ProjectReference Include="..\Estudos.Microsservices.Contratos\Estudos.Microsservices.Contratos.csproj" />
 	</ItemGroup>
 </Project>

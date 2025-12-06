@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var rabbitHost = Environment.GetEnvironmentVariable("RABBITMQ_HOST")
                  ?? "localhost";
+
 builder.Services.AddMassTransit(busConfigurator =>
 {
     busConfigurator.SetKebabCaseEndpointNameFormatter();
@@ -41,21 +42,6 @@ builder.Services.AddOpenTelemetry()
 builder.Services.AddControllers();
 
 var app = builder.Build();
-
-app.MapGet("/", async (ISendEndpointProvider sendEndpointProvider) => {
-    Console.WriteLine("Teste 3");
-    var datetime = DateTime.Now;
-    var message = $"Mensagem de teste! {datetime}";
-    var busMessage = new BusMessage()
-    {
-        Message = $"Mensagem de teste! {datetime}"
-    };
-    var body = Encoding.UTF8.GetBytes(message);
-    var endpoint = await sendEndpointProvider.GetSendEndpoint(new Uri("queue:SegundoTeste"));
-    await endpoint.Send(busMessage);
-    Console.WriteLine($"Enviado {datetime}");
-    return "Hello World!";
-});
 
 app.MapControllers();
 
