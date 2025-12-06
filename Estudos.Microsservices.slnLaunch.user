@@ -7,7 +7,7 @@
         "Action": "Start"
       },
       {
-        "Path": "src\\WebApi\\WebApi.csproj",
+        "Path": "src\\WebApi\\Estudos.Microsservices.WebApi.csproj",
         "Action": "Start"
       }
     ]

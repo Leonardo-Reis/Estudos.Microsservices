@@ -72,3 +72,14 @@ services:
         - mongo
     ports:
       - "8888:8081"
+
+  servidorsql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sql_server
+    environment:
+      SA_PASSWORD: "SeuStrong!Passw0rd"
+      ACCEPT_EULA: "S"
+    ports:
+      - "1433:1433"
+    volumes:
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql

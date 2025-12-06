@@ -5,21 +5,8 @@ using MassTransit.Logging;
 using MassTransit.RabbitMqTransport;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-//using RabbitMQ.Client;
 using System.Text;
 
-//var rabbitHost = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "localhost";
-//var factory = new ConnectionFactory() { HostName = rabbitHost };
-//using var connection = await factory.CreateConnectionAsync();
-//using var channel = await connection.CreateChannelAsync();
-
-//await channel.QueueDeclareAsync(
-//    queue: "SegundoTeste",
-//    durable: true,
-//    exclusive: false,
-//    autoDelete: false,
-//    arguments: null
-//    );
 
 var builder = WebApplication.CreateBuilder(args);
 

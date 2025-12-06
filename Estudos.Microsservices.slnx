@@ -4,5 +4,5 @@
   </Folder>
   <Project Path="src/Estudos.Microsservices.Consumer/Estudos.Microsservices.Consumer.csproj" />
   <Project Path="src/Estudos.Microsservices.Contratos/Estudos.Microsservices.Contratos.csproj" />
-  <Project Path="src/WebApi/WebApi.csproj" />
+  <Project Path="src/WebApi/Estudos.Microsservices.WebApi.csproj" />
 </Solution>
