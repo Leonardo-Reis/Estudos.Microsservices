@@ -13,6 +13,20 @@ namespace Estudos.Microsservices.WebApi.Controllers
         private readonly ISendEndpointProvider _sendEndpointProvider = sendEndpointProvider;
         private readonly AppDbContext _appDbContext = appDbContext;
 
+        [HttpPost(Name = "PostOfertaProduto")]
+        [Route("OfertaProduto")]
+        public async Task<string> PostOfertaProduto([FromBody] OfertaProdutoEntrada entrada)
+        {
+            var datetime = DateTime.Now;
+
+            var endpoint = await _sendEndpointProvider.GetSendEndpoint(new Uri("queue:SegundoTeste"));
+            await endpoint.Send(busMessage);
+
+            Console.WriteLine($"Enviado {datetime}");
+
+            return "Hello World!";
+        }
+
         [HttpGet(Name = "GetSendMessage")]
         [Route("Message")]
         public async Task<string> GetSendMessage()
