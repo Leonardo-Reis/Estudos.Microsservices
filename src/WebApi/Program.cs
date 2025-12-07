@@ -1,12 +1,9 @@
-using DnsClient;
-using Estudos.Microsservices.Contratos;
+using Estudos.Microsservices.Infra.Data.SqlServer;
 using MassTransit;
 using MassTransit.Logging;
-using MassTransit.RabbitMqTransport;
+using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using System.Text;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +35,13 @@ builder.Services.AddOpenTelemetry()
         .AddSource("MongoDB.Driver.Core.Extensions.DiagnosticSources")
         .AddSource(DiagnosticHeaders.DefaultListenerName)
         .AddOtlpExporter());
+
+var connectionString = builder.Configuration.GetConnectionString("SqlConnectionString");
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseSqlServer(connectionString);
+});
 
 builder.Services.AddControllers();
 
